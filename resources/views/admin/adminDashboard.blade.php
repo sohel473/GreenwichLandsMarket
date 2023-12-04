@@ -10,6 +10,7 @@
     <!-- Nav Pills -->
     <div class="d-flex justify-content-center">
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        {{-- Picture --}}
         <li class="nav-item">
           <a class="nav-link {{ $activeTab == 'pictures' ? 'active' : '' }}" id="pills-contact-tab" data-toggle="pill"
             href="#pills-contact" role="tab" aria-controls="pills-contact"
@@ -17,6 +18,7 @@
             Pictures: {{ $pictures->count() }}
           </a>
         </li>
+        {{-- Customer --}}
         <li class="nav-item">
           <a class="nav-link {{ $activeTab == 'customers' ? 'active' : '' }}" id="pills-home-tab" data-toggle="pill"
             href="#pills-home" role="tab" aria-controls="pills-home"
@@ -24,6 +26,7 @@
             Customers: {{ $customers->count() }}
           </a>
         </li>
+        {{-- Admin --}}
         <li class="nav-item">
           <a class="nav-link {{ $activeTab == 'admins' ? 'active' : '' }}" id="pills-profile-tab" data-toggle="pill"
             href="#pills-profile" role="tab" aria-controls="pills-profile"
@@ -67,21 +70,24 @@
                     {{ $picture->created_at->format('n/j/Y') }}
                   </div>
                   <div class="icon-container" style="flex-shrink: 0;">
+                    {{-- View --}}
                     <a href="/picture/{{ $picture->id }}" class="text-info me-2" data-toggle="tooltip"
                       data-placement="top" title="View">
                       <i class="fa-solid fa-eye"></i>
                     </a>
-                    <a href="#" class="text-primary me-2" data-toggle="tooltip" data-placement="top"
-                      title="Edit">
+                    {{-- Edit --}}
+                    <a href="/picture/{{ $picture->id }}/edit" class="text-primary me-2" data-toggle="tooltip"
+                      data-placement="top" title="Edit">
                       <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a href="javascript:void(0);"
-                      onclick="confirmSourceDelete('/recommended_source/{{ $picture->id }}')" class="text-danger"
-                      data-toggle="tooltip" data-placement="top" title="Delete">
+                    {{-- Delete --}}
+                    <a href="javascript:void(0);" onclick="confirmPictureDelete('/picture/{{ $picture->id }}')"
+                      class="text-danger" data-toggle="tooltip" data-placement="top" title="Delete">
                       <i class="fa-solid fa-trash"></i>
                     </a>
                     <!-- Hidden Delete Form -->
-                    <form id="delete-form" action="" method="POST" style="display: none;">
+                    <form id="picture-delete-form" action="/picture/{{ $picture->id }}" method="POST"
+                      style="display: none;">
                       @csrf
                       @method('DELETE')
                     </form>
@@ -204,9 +210,18 @@
   </div>
 
   <script>
-    // Client Delete Confirmation
+    // Picture Delete Confirmation
+    function confirmPictureDelete(deleteUrl) {
+      if (confirm("Are you sure you want to delete this picture?")) {
+        var form = document.getElementById('picture-delete-form');
+        form.action = deleteUrl;
+        form.submit();
+      }
+    }
+
+    // Customer Delete Confirmation
     function confirmClientDelete(deleteUrl) {
-      if (confirm("Are you sure you want to delete this client?")) {
+      if (confirm("Are you sure you want to delete this picture?")) {
         var form = document.getElementById('client-delete-form');
         form.action = deleteUrl;
         form.submit();
@@ -217,15 +232,6 @@
     function confirmAdminDelete(deleteUrl) {
       if (confirm("Are you sure you want to delete this admin user?")) {
         var form = document.getElementById('admin-delete-form');
-        form.action = deleteUrl;
-        form.submit();
-      }
-    }
-
-    // Picture Delete Confirmation
-    function confirmSourceDelete(deleteUrl) {
-      if (confirm("Are you sure you want to delete this source?")) {
-        var form = document.getElementById('delete-form');
         form.action = deleteUrl;
         form.submit();
       }

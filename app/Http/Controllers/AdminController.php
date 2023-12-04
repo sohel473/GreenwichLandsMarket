@@ -21,7 +21,7 @@ class AdminController extends Controller
             $image = $request->file('mainimage');
 
             // Resize image
-            $resizedImage = Image::make($image)->resize(300, null, function ($constraint) {
+            $resizedImage = Image::make($image)->resize(600, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
     
@@ -34,8 +34,7 @@ class AdminController extends Controller
         }  
     }
 
-    public function showAdminPage()
-    {   
+    public function showAdminPage() {   
         $activeTab = 'pictures'; // default active tab, can be changed to 'users' or 'admin' or 'pictures
         $pictures = Product::all();
         $customers = User::where('is_admin', false)->get();
@@ -50,13 +49,11 @@ class AdminController extends Controller
         ]);
     }
 
-    public function showCreatePicturePage()
-    {
+    public function showCreatePicturePage() {
         return view('admin/pictureForm');
     }
 
-    public function showPicturePage(Product $product)
-    {
+    public function showPicturePage(Product $product) {
         return view('admin/picture', [
             'product' => $product,
         ]);
@@ -87,6 +84,41 @@ class AdminController extends Controller
         return redirect('/admin')->with('success', 'Picture created successfully.');
     }
 
+    public function showEditPicturePage(Product $product) {
+        return view('admin/pictureForm', [
+            'product' => $product,
+        ]);
+    }
 
+    public function updatePicture(Request $request, Product $product) {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'mainimage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'price' => 'required|numeric',
+            'old_price' => 'nullable|numeric',
+        ]);
+
+        // Update the product instance
+        $product->update($validatedData);
+
+        // Handle the image
+        if ($request->hasFile('mainimage')) {
+            $filename = $this->handleImage($request, $product);
+            $product->mainimage = $filename;
+        }
+
+        // Save the product
+        $product->save();
+
+        return redirect('/admin')->with('success', 'Picture updated successfully.');
+    }
+
+    public function deletePicture(Product $product) {
+        $product->delete();
+
+        return redirect('/admin')->with('success', 'Picture deleted successfully.');
+    }
     
 }
