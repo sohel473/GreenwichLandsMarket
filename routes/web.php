@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\UserController::class, 'showHomePage']);
+Route::get('/', [App\Http\Controllers\UserController::class, 'showHomePage'])->name('home');
 
 // guest routes
 Route::middleware('guest')->group(function () {

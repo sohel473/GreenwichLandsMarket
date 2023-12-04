@@ -154,9 +154,9 @@ class UserController extends Controller
     }
 
     public function showCartPage() {
-        $isExists = true;
+        $cartExists = true;
         return view('cart/cart', [
-            'isExists' => $isExists,
+            'cartExists' => $cartExists,
         ]);
     }
     
