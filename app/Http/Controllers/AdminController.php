@@ -81,7 +81,7 @@ class AdminController extends Controller
         // Save the product
         $product->save();
 
-        return redirect('/admin')->with('success', 'Picture created successfully.');
+        return redirect('/picture/'. $product->id)->with('success', 'Picture created successfully.');
     }
 
     public function showEditPicturePage(Product $product) {
@@ -112,7 +112,7 @@ class AdminController extends Controller
         // Save the product
         $product->save();
 
-        return redirect('/admin')->with('success', 'Picture updated successfully.');
+        return redirect('/picture/'. $product->id)->with('success', 'Picture updated successfully.');
     }
 
     public function deletePicture(Product $product) {

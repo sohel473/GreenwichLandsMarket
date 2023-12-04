@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,9 +31,12 @@ class UserController extends Controller
         }  
     }
 
-    public function showHomePage()
-    {
-        return view('home');
+    public function showHomePage() {
+        $pictures = Product::all(); // Fetch all pictures from the database
+        
+        return view('home', [
+            'pictures' => $pictures,
+        ]);
     }
 
     public function registerPage() {
