@@ -39,6 +39,9 @@ Route::middleware(('MustBeLoggedIn'))->group(function () {
 
   // // picture routes
   Route::get('/picture/{product}', [AdminController::class, 'showPicturePage'])->name('pictures.show');
+
+  // // cart routes
+  Route::get('/cart', [UserController::class, 'showCartPage']);
 });
 
 // admin routes
