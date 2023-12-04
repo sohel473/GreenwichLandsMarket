@@ -121,7 +121,7 @@ class UserController extends Controller
             // Add validation for the photograph if needed
         ]);
 
-        // Handle passport photograph upload
+        // Handle photograph upload
         $photograph = $this->handlePhotograph($request, $user);
     
         // Update the user's profile

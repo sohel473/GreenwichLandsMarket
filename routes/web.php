@@ -40,4 +40,10 @@ Route::middleware(('MustBeLoggedIn'))->group(function () {
 // admin routes
 Route::middleware('can:admin-access')->group(function () {
   Route::get('/admin', [AdminController::class, 'showAdminPage']);
+
+  // product routes
+  Route::get('/picture/create', [AdminController::class, 'showCreatePicturePage']);
+  Route::get('/picture/{product}', [AdminController::class, 'showPicturePage']);
+  Route::post('/picture', [AdminController::class, 'createPicture']);
+  
 });

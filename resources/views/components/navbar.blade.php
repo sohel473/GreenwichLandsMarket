@@ -23,13 +23,15 @@
                 Admin Dashboard
               </a>
             </li>
+          @else
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="fa fa-shopping-cart"></i> Cart
+                <span class="badge badge-light">0</span>
+              </a>
+            </li>
           @endcan
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fa fa-shopping-cart"></i> Cart
-              <span class="badge badge-light">0</span>
-            </a>
-          </li>
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-tie"></i>
