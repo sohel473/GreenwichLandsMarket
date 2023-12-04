@@ -25,6 +25,16 @@ class Profile extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'date_of_birth' => 'date',
+        // other casts if necessary
+    ];
+
+    /**
      * Get the user associated with the profile.
      */
     public function user()
