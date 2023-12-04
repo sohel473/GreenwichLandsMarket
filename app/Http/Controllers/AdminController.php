@@ -36,7 +36,7 @@ class AdminController extends Controller
 
     public function showAdminPage() {   
         $activeTab = 'pictures'; // default active tab, can be changed to 'users' or 'admin' or 'pictures
-        $pictures = Product::all();
+        $pictures = Product::paginate(7);
         $customers = User::where('is_admin', false)->get();
         $admins = User::where('is_admin', true)->get();
 

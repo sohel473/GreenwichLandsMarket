@@ -94,9 +94,17 @@
                   </div>
                 </div>
               @endforeach
+              <!-- Pagination Links -->
+              <div class="row">
+                <div class="col-12">
+                  {{ $pictures->links('vendor.pagination.bootstrap-4') }}
+                </div>
+              </div>
             </div>
           </div>
+
         </div>
+
       </div>
 
       <!-- Customers Tab -->
