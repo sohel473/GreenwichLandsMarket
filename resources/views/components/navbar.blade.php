@@ -16,6 +16,14 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         @auth
+          @can('admin-access')
+            <li class="nav-item">
+
+              <a href="/admin" class="nav-link" title="Add User" data-toggle="tooltip" data-placement="bottom">
+                Admin Dashboard
+              </a>
+            </li>
+          @endcan
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="fa fa-shopping-cart"></i> Cart
@@ -30,7 +38,13 @@
               <a class="dropdown-item" href="/profile">Profile</a>
               <a class="dropdown-item" href="#">Orders</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/logout">Logout</a>
+              <form action="/logout" method="POST" style="display: none;" id="logout-form">
+                @csrf
+              </form>
+              <a class="dropdown-item" href="#"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Logout
+              </a>
             </div>
           </li>
         @else

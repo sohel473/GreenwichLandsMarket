@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,4 +35,9 @@ Route::middleware(('MustBeLoggedIn'))->group(function () {
   // // profile routes
   Route::get('/profile', [UserController::class, 'showProfilePage']);
   Route::put('/profile/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
+});
+
+// admin routes
+Route::middleware('can:admin-access')->group(function () {
+  Route::get('/admin', [AdminController::class, 'showAdminPage']);
 });

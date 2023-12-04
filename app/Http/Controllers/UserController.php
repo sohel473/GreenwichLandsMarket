@@ -85,7 +85,7 @@ class UserController extends Controller
 
             
             session()->flash('success', 'You have been logged in successfully.');
-            return redirect('/profile');
+            return redirect('/');
 
         }
 
