@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class AdminController extends Controller
 {
@@ -16,9 +17,16 @@ class AdminController extends Controller
             $filename = $product->name . '_' . time() . '.' . $request->mainimage->extension();
     
             // Log::info("Filename: " . $filename);
+
+            $image = $request->file('mainimage');
+
+            // Resize image
+            $resizedImage = Image::make($image)->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
     
-            // Store the file in the 'public/photographs' directory
-            $request->mainimage->storeAs('landmarks', $filename, 'public');
+            // Save the image
+            $resizedImage->save(public_path('storage/landmarks/' . $filename));
 
             // Log::info("Filename: " . $filename);
     
@@ -59,7 +67,7 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'description' => 'required',
-            'mainimage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'mainimage' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'price' => 'required|numeric',
             'old_price' => 'nullable|numeric',
         ]);
