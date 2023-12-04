@@ -17,7 +17,7 @@ class MustBeLoggedIn
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            return redirect('/')->with('error', 'You must be logged in!');
+            return redirect('/login')->with('error', 'You must be logged in!');
         }
         
         return $next($request);

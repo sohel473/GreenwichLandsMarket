@@ -26,6 +26,7 @@ Route::middleware('guest')->group(function () {
   // post routes
   Route::post('/login', [UserController::class, 'login']);
   Route::post('/register', [UserController::class, 'register']);
+
 });
 
 // auth routes
@@ -35,6 +36,9 @@ Route::middleware(('MustBeLoggedIn'))->group(function () {
   // // profile routes
   Route::get('/profile', [UserController::class, 'showProfilePage']);
   Route::put('/profile/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
+
+  // // picture routes
+  Route::get('/picture/{product}', [AdminController::class, 'showPicturePage'])->name('pictures.show');
 });
 
 // admin routes
@@ -43,7 +47,6 @@ Route::middleware('can:admin-access')->group(function () {
 
   // product routes
   Route::get('/picture/create', [AdminController::class, 'showCreatePicturePage']);
-  Route::get('/picture/{product}', [AdminController::class, 'showPicturePage'])->name('pictures.show');
   Route::post('/picture', [AdminController::class, 'createPicture'])->name('pictures.store');
   Route::get('/picture/{product}/edit', [AdminController::class, 'showEditPicturePage']);
   Route::put('/picture/{product}', [AdminController::class, 'updatePicture'])->name('pictures.update');

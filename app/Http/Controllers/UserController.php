@@ -93,7 +93,7 @@ class UserController extends Controller
 
         }
 
-        session()->flash('failure', 'The provided credentials do not match our records.');
+        session()->flash('error', 'The provided credentials do not match our records.');
 
         return back()->withInput($request->only('username'));
     }
