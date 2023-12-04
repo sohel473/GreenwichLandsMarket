@@ -50,10 +50,10 @@ class Profile extends Model
         return "{$this->first_name} {$this->last_name}";
     }
 
-    protected function passportPhotograph(): Attribute {
+    protected function photograph(): Attribute {
         return Attribute::make(
             get: function($value) {
-                return $value ? '/storage/passports/' . $value : '/default_pic.jpg';
+                return $value ? '/storage/photographs/' . $value : '/default_pic.jpg';
             }
         );
     }

@@ -21,8 +21,8 @@ class UserController extends Controller
     
             // Log::info("Filename: " . $filename);
     
-            // Store the file in the 'public/passports' directory
-            $request->passport_photograph->storeAs('photographs', $filename, 'public');
+            // Store the file in the 'public/photographs' directory
+            $request->photograph->storeAs('photographs', $filename, 'public');
 
             // Log::info("Filename: " . $filename);
     

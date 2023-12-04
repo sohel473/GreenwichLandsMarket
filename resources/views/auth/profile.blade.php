@@ -10,10 +10,23 @@
           @csrf
           @method('PUT')
 
-          {{-- Profile Photograph --}}
-          <div class="form-group">
-            <label for="photograph">Profile Photograph</label>
-            <input type="file" class="form-control-file" id="photograph" name="photograph">
+          {{-- Profile Photograph Input and Display --}}
+          <div class="row {{ $user->profile->photograph ? 'mt-3' : 'col-12' }}">
+            {{-- File Input Column --}}
+            <div class="{{ $user->profile->photograph ? 'col-md-6' : 'col-12' }}">
+              <label for="photograph" class="form-label">Profile Photograph</label>
+              <input type="file" name="photograph" class="form-control-file" id="photograph">
+              @error('photograph')
+                <span class="text-danger">{{ $message }}</span>
+              @enderror
+            </div>
+            {{-- Image Display Column --}}
+            @if ($user->profile->photograph)
+              <div class="col-md-6 text-center">
+                <img src="{{ $user->profile->photograph }}" alt="Profile Photograph"
+                  style="max-width: 200px; max-height: 200px;">
+              </div>
+            @endif
           </div>
 
           {{-- First Name --}}

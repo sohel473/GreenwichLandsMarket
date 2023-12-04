@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="#">Greenwich Lands Market</a>
+    <a class="navbar-brand" href="/">Greenwich Lands Market</a>
     <ul class="navbar-nav mr-auto">
       &nbsp; &nbsp; &nbsp; &nbsp;
       <form class="form-inline" method="GET">
