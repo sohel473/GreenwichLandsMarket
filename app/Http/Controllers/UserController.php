@@ -32,7 +32,7 @@ class UserController extends Controller
     }
 
     public function showHomePage() {
-        $pictures = Product::all(); // Fetch all pictures from the database
+        $pictures = Product::paginate(6);
         
         return view('home', [
             'pictures' => $pictures,

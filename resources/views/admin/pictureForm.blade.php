@@ -37,7 +37,7 @@
           <!-- Main Image Input and Display -->
           <div class="row {{ isset($product) && $product->mainimage ? 'mt-3' : 'col-12' }}">
             <!-- File Input Column -->
-            <div class="{{ isset($product) && $product->mainimage ? 'col-md-6 mt-5' : 'col-12' }}">
+            <div class="{{ isset($product) && $product->mainimage ? 'col-md-6 mt-6' : 'col-12' }}">
               <label for="mainimage" class="form-label">Main Image</label>
               <input type="file" name="mainimage" class="form-control-file" id="mainimage"
                 {{ !isset($product) ? 'required' : '' }}>

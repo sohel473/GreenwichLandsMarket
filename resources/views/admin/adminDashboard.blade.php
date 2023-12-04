@@ -46,7 +46,7 @@
         aria-labelledby="pills-contact-tab">
         <!-- Add Picture Button -->
         <div class="text-center">
-          <a href="/picture/create" class="btn btn-sm btn-outline-primary mb-2">Add Picture</a>
+          <a href="/create-picture" class="btn btn-sm btn-outline-primary mb-2">Add Picture</a>
           <a href="#" class="btn btn-sm btn-outline-success mb-2">Download
             Pictures
             Report</a>

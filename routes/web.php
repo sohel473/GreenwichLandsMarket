@@ -49,7 +49,7 @@ Route::middleware('can:admin-access')->group(function () {
   Route::get('/admin', [AdminController::class, 'showAdminPage']);
 
   // product routes
-  Route::get('/picture/create', [AdminController::class, 'showCreatePicturePage']);
+  Route::get('/create-picture', [AdminController::class, 'showCreatePicturePage']);
   Route::post('/picture', [AdminController::class, 'createPicture'])->name('pictures.store');
   Route::get('/picture/{product}/edit', [AdminController::class, 'showEditPicturePage']);
   Route::put('/picture/{product}', [AdminController::class, 'updatePicture'])->name('pictures.update');
