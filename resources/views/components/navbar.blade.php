@@ -3,7 +3,7 @@
     <a class="navbar-brand" href="/">Greenwich Lands Market</a>
     <ul class="navbar-nav mr-auto">
       &nbsp; &nbsp; &nbsp; &nbsp;
-      <form class="form-inline" method="GET">
+      <form class="form-inline" method="GET" action="{{ route('home') }}">
         <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search Lands">
         <button class="btn btn-success" type="submit">Search</button>
       </form>

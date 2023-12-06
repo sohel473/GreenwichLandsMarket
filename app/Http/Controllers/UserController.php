@@ -31,13 +31,19 @@ class UserController extends Controller
         }  
     }
 
-    public function showHomePage() {
-        $pictures = Product::paginate(6);
-        
+    public function showHomePage(Request $request) {
+        $searchQuery = $request->input('search');
+    
+        $pictures = Product::when($searchQuery, function($query) use ($searchQuery) {
+            return $query->where('name', 'LIKE', "%{$searchQuery}%")
+                        ->orWhere('description', 'LIKE', "%{$searchQuery}%");
+        })->paginate(6);
+    
         return view('home', [
             'pictures' => $pictures,
         ]);
     }
+    
 
     public function registerPage() {
         return view('auth/register');
