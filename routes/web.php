@@ -62,6 +62,13 @@ Route::middleware('can:admin-access')->group(function () {
   Route::get('/customer/{user}/edit', [AdminController::class, 'showEditCustomerPage'])->name('customers.edit');
   Route::put('/customer/{user}', [AdminController::class, 'updateCustomer'])->name('customers.update');
   Route::delete('/customer/{user}', [AdminController::class, 'deleteCustomer'])->name('customers.destroy');
+
+  // admin routes
+  Route::get('/create-admin', [AdminController::class, 'showCreateAdminPage'])->name('admins.create');
+  Route::post('/admin', [AdminController::class, 'createAdmin'])->name('admins.store');
+  Route::get('/admin/{user}/edit', [AdminController::class, 'showEditAdminPage'])->name('admins.edit');
+  Route::put('/admin/{user}', [AdminController::class, 'updateAdmin'])->name('admins.update');
+  Route::delete('/admin/{user}', [AdminController::class, 'deleteAdmin'])->name('admins.destroy');
   
 });
 

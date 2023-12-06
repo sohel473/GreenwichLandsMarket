@@ -169,7 +169,7 @@
         role="tabpanel" aria-labelledby="pills-profile-tab">
         <!-- Add Admin Button -->
         <div class="text-center">
-          <a href="/create_admin_user" class="btn btn-sm btn-outline-primary mb-2">Add Admin</a>
+          <a href="/create-admin" class="btn btn-sm btn-outline-primary mb-2">Add Admin</a>
           <a href="#" class="btn btn-sm btn-outline-success mb-2">Download
             Admins
             Report</a>
@@ -191,16 +191,19 @@
                     {{ $admin->created_at->format('n/j/Y') }}
                   </div>
                   <div>
-                    <a href="/admin_user/{{ $admin->id }}" class="text-info me-2" data-toggle="tooltip"
+                    {{-- View --}}
+                    <a href="/profile/{{ $admin->id }}" class="text-info me-2" data-toggle="tooltip"
                       data-placement="top" title="View">
                       <i class="fa-solid fa-eye"></i>
                     </a>
-                    <a href="/admin_user/{{ $admin->id }}/edit" class="text-primary me-2" data-toggle="tooltip"
+                    {{-- Edit --}}
+                    <a href="/admin/{{ $admin->id }}/edit" class="text-primary me-2" data-toggle="tooltip"
                       data-placement="top" title="Edit">
                       <i class="fa-solid fa-pen-to-square"></i>
                     </a>
+                    {{-- Delete --}}
                     @if (auth()->user()->id !== $admin->id)
-                      <a href="javascript:void(0);" onclick="confirmAdminDelete('/admin_user/{{ $admin->id }}')"
+                      <a href="javascript:void(0);" onclick="confirmAdminDelete('/admin/{{ $admin->id }}')"
                         class="text-danger" data-toggle="tooltip" data-placement="top" title="Delete">
                         <i class="fa-solid fa-trash"></i>
                       </a>

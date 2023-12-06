@@ -178,4 +178,60 @@ class AdminController extends Controller
 
         return redirect('/admin')->with('success', 'Customer deleted successfully.');
     }
+
+    public function showCreateAdminPage() {
+        return view('admin/adminForm');
+    }
+
+    public function createAdmin(Request $request) {
+        // Validate the request data
+        $request->validate([
+            'username' => ['required', 'min:3', 'max:255', Rule::unique('users', 'username')],
+            'email' => ['max:255'],
+            'password' => ['required', 'min:5', 'max:255', 'confirmed'],
+        ]);
+
+        $user = User::create([
+            'username' => $request->username,
+            'email' => $request->email, 
+            'password' => Hash::make($request->password),
+            'is_admin' => true,
+        ]);
+
+        // Create an empty profile for the user
+        $user->profile()->create([
+            'user_id' => $user->id,
+        ]);
+
+        return redirect('/admin')->with('success', 'Admin created successfully.');
+    }
+
+    public function showEditAdminPage(User $user) {
+        return view('admin/adminForm', [
+            'admin' => $user,
+        ]);
+    }
+
+    public function updateAdmin(Request $request, User $user) {
+        // Validate the request data
+        $request->validate([
+            'username' => ['required', 'min:3', 'max:255', Rule::unique('users', 'username')->ignore($user->id)],
+            'email' => ['max:255'],
+            'password' => ['nullable', 'min:6', 'max:255', 'confirmed'],
+        ]);
+
+        $user->update([
+            'username' => $request->username,
+            'email' => $request->email, 
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect('/admin')->with('success', 'Admin updated successfully.');
+    }
+
+    public function deleteAdmin(User $user) {
+        $user->delete();
+
+        return redirect('/admin')->with('success', 'Admin deleted successfully.');
+    }
 }
