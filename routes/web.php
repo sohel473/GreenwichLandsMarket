@@ -41,8 +41,6 @@ Route::middleware(('MustBeLoggedIn'))->group(function () {
   // // picture routes
   Route::get('/picture/{product}', [AdminController::class, 'showPicturePage'])->name('pictures.show');
 
-  // // cart routes
-  Route::get('/cart', [UserController::class, 'showCartPage']);
 });
 
 // admin routes
@@ -79,7 +77,7 @@ Route::middleware('can:admin-access')->group(function () {
 });
 
 // cart routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['MustBeLoggedIn'])->group(function () {
   Route::post('/cart/add/{productId}', [OrderController::class, 'addToCart'])->name('cart.add');
   Route::get('/cart', [OrderController::class, 'viewCart'])->name('cart.view');
   Route::post('/cart/remove/{productId}', [OrderController::class, 'removeFromCart'])->name('cart.remove');

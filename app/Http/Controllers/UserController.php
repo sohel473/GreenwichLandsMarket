@@ -158,12 +158,5 @@ class UserController extends Controller
     
         return back();
     }
-
-    public function showCartPage() {
-        $cartExists = true;
-        return view('cart/cart', [
-            'cartExists' => $cartExists,
-        ]);
-    }
     
 }
