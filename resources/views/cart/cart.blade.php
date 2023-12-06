@@ -1,6 +1,6 @@
 <x-layout>
   <div class="container my-5">
-    @if ($cartExists)
+    @if ($isExists)
       <div class="my-5">
         <h2>Your Cart</h2>
       </div>
@@ -15,46 +15,49 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>
-              <img src="{{ asset('storage/landmarks/Pic 1_1701672308.jpg') }}" alt="Product Image"
-                style="height: 100px; width: auto; margin-right: 10px;">
-              Static Product Name
-            </td>
-            <td>
-              <button class="btn btn-secondary btn-sm mr-2">-</button>
-              1
-              <button class="btn btn-secondary btn-sm ml-2">+</button>
-            </td>
-            <td class="text-right">$10.00</td>
-            <td><button class="btn btn-danger btn-sm">Remove</button></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>
-              <img src="{{ asset('storage/landmarks/Pic 1_1701672308.jpg') }}" alt="Product Image"
-                style="height: 100px; width: auto; margin-right: 10px;">
-              Another Static Product
-            </td>
-            <td>
-              <button class="btn btn-secondary btn-sm mr-2">-</button>
-              2
-              <button class="btn btn-secondary btn-sm ml-2">+</button>
-            </td>
-            <td class="text-right">$20.00</td>
-            <td><button class="btn btn-danger btn-sm">Remove</button></td>
-          </tr>
+          @foreach ($carts as $index => $cart)
+            <tr>
+              <th scope="row">{{ $index + 1 }}</th>
+
+              <td>
+                <img src="{{ $cart->product->mainimage }}" alt="Product Image"
+                  style="height: 100px; width: auto; margin-right: 10px;">
+                {{ $cart->product->name }}
+              </td>
+              <td>
+                <form
+                  action="{{ route('cart.changeQuantity', ['productId' => $cart->product->id, 'changeType' => 'decrease']) }}"
+                  method="POST">
+                  @csrf
+                  <button type="submit" class="btn btn-secondary btn-sm">-</button>
+                </form>
+                {{ $cart->quantity }}
+                <form
+                  action="{{ route('cart.changeQuantity', ['productId' => $cart->product->id, 'changeType' => 'increase']) }}"
+                  method="POST">
+                  @csrf
+                  <button type="submit" class="btn btn-secondary btn-sm">+</button>
+                </form>
+              </td>
+              <td class="text-right">${{ number_format($cart->total, 2) }}</td>
+              <td>
+                <form action="{{ route('cart.remove', $cart->product->id) }}" method="POST">
+                  @csrf
+                  <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                </form>
+              </td>
+            </tr>
+          @endforeach
           <tr>
             <th scope="row"></th>
             <td colspan="2">Total</td>
-            <td class="text-right">$30.00</td>
+            <td class="text-right">${{ number_format($order->total, 2) }}</td>
             <td></td>
           </tr>
           <tr>
             <th scope="row"></th>
             <td colspan="4" class="text-right">
-              <a href="#" class="btn btn-warning mr-4">Continue Shopping</a>
+              <a href="{{ route('home') }}" class="btn btn-warning mr-4">Continue Shopping</a>
               <a href="#" class="btn btn-success mr-4">Proceed To Checkout</a>
             </td>
           </tr>

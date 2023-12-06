@@ -27,7 +27,7 @@
             <li class="nav-item">
               <a href="/cart" class="nav-link">
                 <i class="fa fa-shopping-cart"></i> Cart
-                <span class="badge badge-light">0</span>
+                <span class="badge badge-light">@include('components.cart-total')</span>
               </a>
             </li>
           @endcan

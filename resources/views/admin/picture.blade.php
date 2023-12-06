@@ -28,7 +28,7 @@
 
         {{-- Add to Cart Button --}}
         @cannot('admin-access')
-          <form action="#" method="POST">
+          <form action="/cart/add/{{ $product->id }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
           </form>

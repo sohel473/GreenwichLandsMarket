@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,7 @@ Route::get('/', [App\Http\Controllers\UserController::class, 'showHomePage'])->n
 Route::middleware('guest')->group(function () {
   // user routes
   // get routes
-  Route::get('/login', [UserController::class, 'loginPage']);
+  Route::get('/login', [UserController::class, 'loginPage'])->name('login');
   Route::get('/register', [UserController::class, 'registerPage']);
   // post routes
   Route::post('/login', [UserController::class, 'login']);
@@ -55,4 +56,12 @@ Route::middleware('can:admin-access')->group(function () {
   Route::put('/picture/{product}', [AdminController::class, 'updatePicture'])->name('pictures.update');
   Route::delete('/picture/{product}', [AdminController::class, 'deletePicture']);
   
+});
+
+// cart routes
+Route::middleware(['auth'])->group(function () {
+  Route::post('/cart/add/{productId}', [OrderController::class, 'addToCart'])->name('cart.add');
+  Route::get('/cart', [OrderController::class, 'viewCart'])->name('cart.view');
+  Route::post('/cart/remove/{productId}', [OrderController::class, 'removeFromCart'])->name('cart.remove');
+  Route::post('/cart/change-quantity/{productId}/{changeType}', [OrderController::class, 'changeCartItemQuantity'])->name('cart.changeQuantity');
 });
