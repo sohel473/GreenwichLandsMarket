@@ -69,6 +69,12 @@ Route::middleware('can:admin-access')->group(function () {
   Route::get('/admin/{user}/edit', [AdminController::class, 'showEditAdminPage'])->name('admins.edit');
   Route::put('/admin/{user}', [AdminController::class, 'updateAdmin'])->name('admins.update');
   Route::delete('/admin/{user}', [AdminController::class, 'deleteAdmin'])->name('admins.destroy');
+
+  // report routes
+  Route::get('/download-pictures-report', [AdminController::class, 'downloadPicturesReport'])->name('download.pictures.report');
+  Route::get('/download-customers-report', [AdminController::class, 'downloadCustomersReport'])->name('download.customers.report');
+  Route::get('/download-admins-report', [AdminController::class, 'downloadAdminsReport'])->name('download.admins.report');
+
   
 });
 
@@ -78,4 +84,5 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/cart', [OrderController::class, 'viewCart'])->name('cart.view');
   Route::post('/cart/remove/{productId}', [OrderController::class, 'removeFromCart'])->name('cart.remove');
   Route::post('/cart/change-quantity/{productId}/{changeType}', [OrderController::class, 'changeCartItemQuantity'])->name('cart.changeQuantity');
+  
 });

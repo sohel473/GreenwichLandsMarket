@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
@@ -71,7 +72,6 @@ class AdminController extends Controller
         ]);
     }
     
-
     public function showCreatePicturePage() {
         return view('admin/pictureForm');
     }
@@ -254,5 +254,23 @@ class AdminController extends Controller
         $user->delete();
 
         return redirect('/admin')->with('success', 'Admin deleted successfully.');
+    }
+
+    public function downloadPicturesReport() {
+        $pictures = Product::all();
+        $pdf = PDF::loadView('reports.pictures', compact('pictures'));
+        return $pdf->download('pictures_report.pdf');
+    }
+
+    public function downloadCustomersReport() {
+        $customers = User::where('is_admin', false)->get();
+        $pdf = PDF::loadView('reports.customers', compact('customers'));
+        return $pdf->download('customers_report.pdf');
+    }
+
+    public function downloadAdminsReport() {
+        $admins = User::where('is_admin', true)->get();
+        $pdf = PDF::loadView('reports.admins', compact('admins'));
+        return $pdf->download('admins_report.pdf');
     }
 }

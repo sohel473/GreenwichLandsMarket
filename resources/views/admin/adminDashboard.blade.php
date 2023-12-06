@@ -47,7 +47,7 @@
         <!-- Add Picture Button -->
         <div class="text-center">
           <a href="/create-picture" class="btn btn-sm btn-outline-primary mb-2">Add Picture</a>
-          <a href="#" class="btn btn-sm btn-outline-success mb-2">Download
+          <a href="{{ route('download.pictures.report') }}" class="btn btn-sm btn-outline-success mb-2">Download
             Pictures
             Report</a>
           <div class="text-center">
@@ -114,7 +114,7 @@
         <!-- Add Customer Button -->
         <div class="text-center">
           <a href="{{ route('customers.create') }}" class="btn btn-sm btn-outline-primary mb-2">Add Customer</a>
-          <a href="#" class="btn btn-sm btn-outline-success mb-2">Download
+          <a href="{{ route('download.customers.report') }}" class="btn btn-sm btn-outline-success mb-2">Download
             Customers
             Report</a>
         </div>
@@ -178,7 +178,7 @@
         <!-- Add Admin Button -->
         <div class="text-center">
           <a href="/create-admin" class="btn btn-sm btn-outline-primary mb-2">Add Admin</a>
-          <a href="#" class="btn btn-sm btn-outline-success mb-2">Download
+          <a href="{{ route('download.admins.report') }}" class="btn btn-sm btn-outline-success mb-2">Download
             Admins
             Report</a>
         </div>
