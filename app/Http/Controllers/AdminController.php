@@ -36,12 +36,32 @@ class AdminController extends Controller
         }  
     }
 
-    public function showAdminPage() {   
-        $activeTab = 'pictures'; // default active tab, can be changed to 'users' or 'admin' or 'pictures
-        $pictures = Product::paginate(7);
-        $customers = User::where('is_admin', false)->get();
-        $admins = User::where('is_admin', true)->get();
-
+    public function showAdminPage(Request $request) {
+        $activeTab = $request->get('tab', 'pictures'); // Get the active tab from the request, default to 'pictures'
+    
+        // Search for Pictures
+        $pictureQuery = $request->input('picture_search');
+        $pictures = Product::when($pictureQuery, function ($query) use ($pictureQuery) {
+            return $query->where('name', 'LIKE', "%{$pictureQuery}%")
+                         ->orWhere('description', 'LIKE', "%{$pictureQuery}%");
+        })->paginate(7);
+    
+        // Search for Customers
+        $customerQuery = $request->input('customer_search');
+        $customers = User::where('is_admin', false)
+                        ->when($customerQuery, function ($query) use ($customerQuery) {
+                            return $query->where('username', 'LIKE', "%{$customerQuery}%");
+                        })
+                        ->paginate(7);
+    
+        // Search for Admins
+        $adminQuery = $request->input('admin_search');
+        $admins = User::where('is_admin', true)
+                      ->when($adminQuery, function ($query) use ($adminQuery) {
+                          return $query->where('username', 'LIKE', "%{$adminQuery}%");
+                      })
+                      ->paginate(7);
+    
         return view('admin/adminDashboard', [
             'title' => 'Admin Dashboard',
             'activeTab' => $activeTab,
@@ -50,6 +70,7 @@ class AdminController extends Controller
             'admins' => $admins,
         ]);
     }
+    
 
     public function showCreatePicturePage() {
         return view('admin/pictureForm');

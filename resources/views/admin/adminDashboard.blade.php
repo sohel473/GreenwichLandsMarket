@@ -52,6 +52,7 @@
             Report</a>
           <div class="text-center">
             <form action="/admin" method="GET">
+              <input type="hidden" name="tab" value="pictures">
               <input type="text" name="picture_search" class="form-control d-inline-block mb-2" style="width: 50%;"
                 placeholder="Search Pictures by name, description">
               <button type="submit" class="btn btn-sm btn-primary">Search</button>
@@ -119,8 +120,9 @@
         </div>
         <div class="text-center">
           <form action="/admin" method="GET">
-            <input type="text" name="customer_search" class="form-control d-inline-block mb-2" style="width: 50%;"
-              placeholder="Search Customers by username, telephone">
+            <input type="hidden" name="tab" value="customers">
+            <input type="text" name="customer_search" class="form-control d-inline-block mb-2"
+              style="width: 50%;" placeholder="Search Customers by username">
             <button type="submit" class="btn btn-sm btn-primary">Search</button>
           </form>
         </div>
@@ -159,6 +161,12 @@
                   </div>
                 </div>
               @endforeach
+              <!-- Pagination Links -->
+              <div class="row">
+                <div class="col-12">
+                  {{ $customers->links('vendor.pagination.bootstrap-4') }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -176,6 +184,7 @@
         </div>
         <div class="text-center">
           <form action="/admin" method="GET">
+            <input type="hidden" name="tab" value="admins">
             <input type="text" name="admin_search" class="form-control d-inline-block mb-2" style="width: 50%;"
               placeholder="Search Admin by username">
             <button type="submit" class="btn btn-sm btn-primary">Search</button>
@@ -216,6 +225,12 @@
                   </div>
                 </div>
               @endforeach
+              <!-- Pagination Links -->
+              <div class="row">
+                <div class="col-12">
+                  {{ $admins->links('vendor.pagination.bootstrap-4') }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
