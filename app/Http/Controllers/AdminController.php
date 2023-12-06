@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -120,5 +122,60 @@ class AdminController extends Controller
 
         return redirect('/admin')->with('success', 'Picture deleted successfully.');
     }
+
+    public function showCreateCustomerPage() {
+        return view('admin/customerForm');
+    }
+
+    public function createCustomer(Request $request) {
+        // Validate the request data
+        $request->validate([
+            'username' => ['required', 'min:3', 'max:255', Rule::unique('users', 'username')],
+            'email' => ['max:255'],
+            'password' => ['required', 'min:6', 'max:255', 'confirmed'],
+        ]);
+
+        $user = User::create([
+            'username' => $request->username,
+            'email' => $request->email, 
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Create an empty profile for the user
+        $user->profile()->create([
+            'user_id' => $user->id,
+
+        ]);
+
+        return redirect('/admin')->with('success', 'Customer created successfully.');
+    }
+
+    public function showEditCustomerPage(User $user) {
+        return view('admin/customerForm', [
+            'customer' => $user,
+        ]);
+    }
+
+    public function updateCustomer(Request $request, User $user) {
+        // Validate the request data
+        $request->validate([
+            'username' => ['required', 'min:3', 'max:255', Rule::unique('users', 'username')->ignore($user->id)],
+            'email' => ['max:255'],
+            'password' => ['nullable', 'min:6', 'max:255', 'confirmed'],
+        ]);
+
+        $user->update([
+            'username' => $request->username,
+            'email' => $request->email, 
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect('/admin')->with('success', 'Customer updated successfully.');
+    }
     
+    public function deleteCustomer(User $user) {
+        $user->delete();
+
+        return redirect('/admin')->with('success', 'Customer deleted successfully.');
+    }
 }

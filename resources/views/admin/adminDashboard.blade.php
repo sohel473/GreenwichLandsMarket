@@ -112,7 +112,7 @@
         aria-labelledby="pills-home-tab">
         <!-- Add Customer Button -->
         <div class="text-center">
-          <a href="#" class="btn btn-sm btn-outline-primary mb-2">Add Customer</a>
+          <a href="{{ route('customers.create') }}" class="btn btn-sm btn-outline-primary mb-2">Add Customer</a>
           <a href="#" class="btn btn-sm btn-outline-success mb-2">Download
             Customers
             Report</a>
@@ -134,20 +134,24 @@
                     {{ $customer->created_at->format('n/j/Y') }}
                   </div>
                   <div>
-                    <a href="#" class="text-info me-2" data-toggle="tooltip" data-placement="top"
-                      title="View">
+                    {{-- View --}}
+                    <a href="/profile/{{ $customer->id }}" class="text-info me-2" data-toggle="tooltip"
+                      data-placement="top" title="View">
                       <i class="fa-solid fa-eye"></i>
                     </a>
-                    <a href="#" class="text-primary me-2" data-toggle="tooltip" data-placement="top"
-                      title="Edit">
+                    {{-- Edit --}}
+                    <a href="{{ route('customers.edit', ['user' => $customer->id]) }}" class="text-primary me-2"
+                      data-toggle="tooltip" data-placement="top" title="Edit">
                       <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a href="javascript:void(0);" onclick="confirmClientDelete('/user/{{ $customer->id }}')"
+
+                    {{-- Delete --}}
+                    <a href="javascript:void(0);" onclick="confirmClientDelete('/customer/{{ $customer->id }}')"
                       class="text-danger" data-toggle="tooltip" data-placement="top" title="Delete">
                       <i class="fa-solid fa-trash"></i>
                     </a>
                     <!-- Hidden Delete Form for Clients -->
-                    <form id="client-delete-form" action="" method="POST" style="display: none;">
+                    <form id="customer-delete-form" action="" method="POST" style="display: none;">
                       @csrf
                       @method('DELETE')
                     </form>
@@ -230,7 +234,7 @@
     // Customer Delete Confirmation
     function confirmClientDelete(deleteUrl) {
       if (confirm("Are you sure you want to delete this picture?")) {
-        var form = document.getElementById('client-delete-form');
+        var form = document.getElementById('customer-delete-form');
         form.action = deleteUrl;
         form.submit();
       }

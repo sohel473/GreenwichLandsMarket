@@ -115,9 +115,9 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function showProfilePage() {
+    public function showProfilePage(User $user) {
         return view('auth/profile',[
-            'user' => Auth::user(),
+            'user' => $user,
         ]);
     }
 

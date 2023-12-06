@@ -35,7 +35,7 @@ Route::middleware(('MustBeLoggedIn'))->group(function () {
   Route::post('/logout', [UserController::class, 'logout']);
 
   // // profile routes
-  Route::get('/profile', [UserController::class, 'showProfilePage']);
+  Route::get('/profile/{user}', [UserController::class, 'showProfilePage']);
   Route::put('/profile/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
 
   // // picture routes
@@ -55,6 +55,13 @@ Route::middleware('can:admin-access')->group(function () {
   Route::get('/picture/{product}/edit', [AdminController::class, 'showEditPicturePage']);
   Route::put('/picture/{product}', [AdminController::class, 'updatePicture'])->name('pictures.update');
   Route::delete('/picture/{product}', [AdminController::class, 'deletePicture']);
+
+  // customer routes
+  Route::get('/create-customer', [AdminController::class, 'showCreateCustomerPage'])->name('customers.create');
+  Route::post('/customer', [AdminController::class, 'createCustomer'])->name('customers.store');
+  Route::get('/customer/{user}/edit', [AdminController::class, 'showEditCustomerPage'])->name('customers.edit');
+  Route::put('/customer/{user}', [AdminController::class, 'updateCustomer'])->name('customers.update');
+  Route::delete('/customer/{user}', [AdminController::class, 'deleteCustomer'])->name('customers.destroy');
   
 });
 
