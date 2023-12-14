@@ -34,7 +34,7 @@ Route::middleware(('MustBeLoggedIn'))->group(function () {
   Route::post('/logout', [UserController::class, 'logout']);
 
   // // profile routes
-  Route::get('/profile/{user}', [UserController::class, 'showProfilePage']);
+  Route::get('/profile/{user}', [UserController::class, 'showProfilePage'])->name('profile.show');
   Route::put('/profile/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
 
   // // picture routes
@@ -70,6 +70,7 @@ Route::middleware('can:admin-access')->group(function () {
   Route::get('/download-pictures-report', [AdminController::class, 'downloadPicturesReport'])->name('download.pictures.report');
   Route::get('/download-customers-report', [AdminController::class, 'downloadCustomersReport'])->name('download.customers.report');
   Route::get('/download-admins-report', [AdminController::class, 'downloadAdminsReport'])->name('download.admins.report');
+  Route::get('/download-orders-report', [AdminController::class, 'downloadOrdersReport'])->name('download.orders.report');
 });
 
 // cart routes

@@ -18,6 +18,14 @@
             Pictures: {{ $pictures->count() }}
           </a>
         </li>
+        {{-- Orders --}}
+        <li class="nav-item">
+          <a class="nav-link {{ $activeTab == 'orders' ? 'active' : '' }}" id="pills-orders-tab" data-toggle="pill"
+            href="#pills-orders" role="tab" aria-controls="pills-orders"
+            aria-selected="{{ $activeTab == 'orders' ? 'true' : 'false' }}">
+            Orders: {{ $orders->count() }}
+          </a>
+        </li>
         {{-- Customer --}}
         <li class="nav-item">
           <a class="nav-link {{ $activeTab == 'customers' ? 'active' : '' }}" id="pills-home-tab" data-toggle="pill"
@@ -108,9 +116,66 @@
 
       </div>
 
+      <!-- Orders Tab -->
+      <div class="tab-pane fade {{ $activeTab == 'orders' ? 'show active' : '' }}" id="pills-orders" role="tabpanel"
+        aria-labelledby="pills-orders-tab">
+        <!-- Add Order Button -->
+        <div class="text-center">
+          {{-- <a href="/create-order" class="btn btn-sm btn-outline-primary mb-2">Add Picture</a> --}}
+          {{-- {{ route('download.orders.report') }} --}}
+          <a href="{{ route('download.orders.report') }}" class="btn btn-sm btn-outline-success mb-2">Download
+            Orders
+            Report</a>
+          <div class="text-center">
+            <form action="/admin" method="GET">
+              <input type="hidden" name="tab" value="orders">
+              <input type="text" name="order_search" class="form-control d-inline-block mb-2" style="width: 50%;"
+                placeholder="Search Orders by customer name">
+              <button type="submit" class="btn btn-sm btn-primary">Search</button>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <div class="list-group">
+              @foreach ($orders as $order)
+                <div class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <!-- User's name as an anchor tag -->
+                    <h5 class="mb-1">
+                      <a href="{{ route('profile.show', ['user' => $order->user->id]) }}">
+                        {{ $order->user->username }}</a>'s Order
+
+                    </h5>
+                    <small>Ordered on {{ $order->updated_at->format('d M Y') }}</small>
+                  </div>
+                  <p class="mb-1">Total: ${{ number_format($order->getTotalAttribute(), 2) }}</p>
+                  <small>Order Items:</small>
+                  <ul class="list-unstyled">
+                    @foreach ($order->orderItems as $item)
+                      <li>
+                        <i class="fa-solid fa-circle" aria-hidden="true"></i>
+                        <a href="{{ route('pictures.show', ['product' => $item->product->id]) }}">
+                          {{ $item->product->name }}
+                        </a> - Qty: {{ $item->quantity }}
+                      </li>
+                    @endforeach
+                  </ul>
+                </div>
+              @endforeach
+              <!-- Pagination Links -->
+              <div class="mt-3">
+                {{ $orders->links('vendor.pagination.bootstrap-4') }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
       <!-- Customers Tab -->
-      <div class="tab-pane fade {{ $activeTab == 'customers' ? 'show active' : '' }}" id="pills-home" role="tabpanel"
-        aria-labelledby="pills-home-tab">
+      <div class="tab-pane fade {{ $activeTab == 'customers' ? 'show active' : '' }}" id="pills-home"
+        role="tabpanel" aria-labelledby="pills-home-tab">
         <!-- Add Customer Button -->
         <div class="text-center">
           <a href="{{ route('customers.create') }}" class="btn btn-sm btn-outline-primary mb-2">Add Customer</a>

@@ -38,7 +38,9 @@
               {{ Auth::user()->username }}</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="/profile/{{ auth()->user()->id }}">Profile</a>
-              <a class="dropdown-item" href="{{ route('order.list') }}">Orders</a>
+              @cannot('admin-access')
+                <a class="dropdown-item" href="{{ route('order.list') }}">Orders</a>
+              @endcannot
               <div class="dropdown-divider"></div>
               <form action="/logout" method="POST" style="display: none;" id="logout-form">
                 @csrf
