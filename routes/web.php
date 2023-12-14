@@ -27,7 +27,6 @@ Route::middleware('guest')->group(function () {
   // post routes
   Route::post('/login', [UserController::class, 'login']);
   Route::post('/register', [UserController::class, 'register']);
-
 });
 
 // auth routes
@@ -40,7 +39,6 @@ Route::middleware(('MustBeLoggedIn'))->group(function () {
 
   // // picture routes
   Route::get('/picture/{product}', [AdminController::class, 'showPicturePage'])->name('pictures.show');
-
 });
 
 // admin routes
@@ -72,8 +70,6 @@ Route::middleware('can:admin-access')->group(function () {
   Route::get('/download-pictures-report', [AdminController::class, 'downloadPicturesReport'])->name('download.pictures.report');
   Route::get('/download-customers-report', [AdminController::class, 'downloadCustomersReport'])->name('download.customers.report');
   Route::get('/download-admins-report', [AdminController::class, 'downloadAdminsReport'])->name('download.admins.report');
-
-  
 });
 
 // cart routes
@@ -82,5 +78,10 @@ Route::middleware(['MustBeLoggedIn'])->group(function () {
   Route::get('/cart', [OrderController::class, 'viewCart'])->name('cart.view');
   Route::post('/cart/remove/{productId}', [OrderController::class, 'removeFromCart'])->name('cart.remove');
   Route::post('/cart/change-quantity/{productId}/{changeType}', [OrderController::class, 'changeCartItemQuantity'])->name('cart.changeQuantity');
-  
+  Route::post('/order/confirm', [OrderController::class, 'confirmOrder'])->name('order.confirm');
+  Route::get('/success-page', function () {
+    return view('cart/success-page');
+  })->name('success.page');
+  // order list routes
+  Route::get('/order-list', [OrderController::class, 'showOrderListPage'])->name('order.list');
 });

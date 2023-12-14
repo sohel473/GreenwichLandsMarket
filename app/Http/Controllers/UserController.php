@@ -14,42 +14,59 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
 
-    function handlePhotograph(Request $request, User $user) {
+    function handlePhotograph(Request $request, User $user)
+    {
         if ($request->hasFile('photograph')) {
 
             // Generate the custom filename
             $filename = $user->id . '_' . $user->username . '_' . time() . '.' . $request->photograph->extension();
-    
+
             // Log::info("Filename: " . $filename);
-    
+
             // Store the file in the 'public/photographs' directory
             $request->photograph->storeAs('photographs', $filename, 'public');
 
             // Log::info("Filename: " . $filename);
-    
+
             return $filename;
-        }  
+        }
     }
 
-    public function showHomePage(Request $request) {
+    public function showHomePage(Request $request)
+    {
         $searchQuery = $request->input('search');
-    
-        $pictures = Product::when($searchQuery, function($query) use ($searchQuery) {
+        $perPage = $request->input('perPage', 6); // Default to 6 if not specified
+        $sort = $request->input('sort', ''); // Default to empty string if not specified
+
+        $query = Product::when($searchQuery, function ($query) use ($searchQuery) {
             return $query->where('name', 'LIKE', "%{$searchQuery}%")
-                        ->orWhere('description', 'LIKE', "%{$searchQuery}%");
-        })->paginate(6);
-    
+                ->orWhere('description', 'LIKE', "%{$searchQuery}%");
+        });
+
+        // sort price
+        if ($sort === 'price-ASC') {
+            $query->orderBy('price', 'asc');
+        } elseif ($sort === 'price-DESC') {
+            $query->orderBy('price', 'desc');
+        }
+
+        $pictures = $query->paginate($perPage);
+
         return view('home', [
             'pictures' => $pictures,
+            'perPage' => $perPage,
+            'sort' => $sort,
         ]);
     }
-    
 
-    public function registerPage() {
+
+    public function registerPage()
+    {
         return view('auth/register');
     }
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
             'username' => ['required', 'min:3', 'max:255', Rule::unique('users', 'username')],
             'email' => ['max:255'],
@@ -58,7 +75,7 @@ class UserController extends Controller
 
         $user = User::create([
             'username' => $request->username,
-            'email' => $request->email, 
+            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
@@ -75,11 +92,13 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function loginPage() {
+    public function loginPage()
+    {
         return view('auth/login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -93,10 +112,9 @@ class UserController extends Controller
 
             $request->session()->regenerate();
 
-            
+
             session()->flash('success', 'You have been logged in successfully.');
             return redirect('/');
-
         }
 
         session()->flash('error', 'The provided credentials do not match our records.');
@@ -104,24 +122,27 @@ class UserController extends Controller
         return back()->withInput($request->only('username'));
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
-    
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         session()->flash('success', 'You have been logged out successfully.');
-    
+
         return redirect('/');
     }
 
-    public function showProfilePage(User $user) {
-        return view('auth/profile',[
+    public function showProfilePage(User $user)
+    {
+        return view('auth/profile', [
             'user' => $user,
         ]);
     }
 
-    public function updateProfile(Request $request, User $user) {
+    public function updateProfile(Request $request, User $user)
+    {
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -133,7 +154,7 @@ class UserController extends Controller
 
         // Handle photograph upload
         $photograph = $this->handlePhotograph($request, $user);
-    
+
         // Update the user's profile
         $user->profile->update([
             'first_name' => $request->first_name,
@@ -141,9 +162,9 @@ class UserController extends Controller
             'telephone' => $request->telephone,
             'address' => $request->address,
             'date_of_birth' => $request->date_of_birth,
-            'photograph' => $photograph ?:$user->profile->getRawOriginal('photograph'),
+            'photograph' => $photograph ?: $user->profile->getRawOriginal('photograph'),
         ]);
-    
+
         // If password change is requested, validate and update it
         if ($request->filled('password')) {
             $request->validate([
@@ -153,10 +174,9 @@ class UserController extends Controller
                 'password' => Hash::make($request->password),
             ]);
         }
-    
+
         session()->flash('success', 'Your profile has been updated successfully.');
-    
+
         return back();
     }
-    
 }

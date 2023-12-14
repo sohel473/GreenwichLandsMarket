@@ -11,6 +11,11 @@ class Cart extends Model
 
     protected $fillable = ['user_id', 'product_id', 'quantity', 'purchased'];
 
+    // casts
+    protected $casts = [
+        'purchased' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

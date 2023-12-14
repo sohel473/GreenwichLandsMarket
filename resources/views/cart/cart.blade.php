@@ -17,30 +17,36 @@
         <tbody>
           @foreach ($carts as $index => $cart)
             <tr>
-              <th scope="row">{{ $index + 1 }}</th>
+              <th scope="row" class="align-middle">
+                {{ $index + 1 }}
+              </th>
 
               <td>
                 <img src="{{ $cart->product->mainimage }}" alt="Product Image"
                   style="height: 100px; width: auto; margin-right: 10px;">
                 {{ $cart->product->name }}
               </td>
-              <td>
-                <form
-                  action="{{ route('cart.changeQuantity', ['productId' => $cart->product->id, 'changeType' => 'decrease']) }}"
-                  method="POST">
-                  @csrf
-                  <button type="submit" class="btn btn-secondary btn-sm">-</button>
-                </form>
-                {{ $cart->quantity }}
-                <form
-                  action="{{ route('cart.changeQuantity', ['productId' => $cart->product->id, 'changeType' => 'increase']) }}"
-                  method="POST">
-                  @csrf
-                  <button type="submit" class="btn btn-secondary btn-sm">+</button>
-                </form>
+              <td class="align-middle">
+                <div class="d-flex align-items-center">
+                  <form
+                    action="{{ route('cart.changeQuantity', ['productId' => $cart->product->id, 'changeType' => 'decrease']) }}"
+                    method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-secondary btn-sm">-</button>
+                  </form>
+                  <span class="mx-2">{{ $cart->quantity }}</span>
+                  <form
+                    action="{{ route('cart.changeQuantity', ['productId' => $cart->product->id, 'changeType' => 'increase']) }}"
+                    method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-secondary btn-sm">+</button>
+                  </form>
+                </div>
               </td>
-              <td class="text-right">${{ number_format($cart->total, 2) }}</td>
-              <td>
+              <td class="text-right align-middle">
+                ${{ number_format($cart->total, 2) }}
+              </td>
+              <td class="align-middle">
                 <form action="{{ route('cart.remove', $cart->product->id) }}" method="POST">
                   @csrf
                   <button type="submit" class="btn btn-danger btn-sm">Remove</button>
@@ -58,7 +64,7 @@
             <th scope="row"></th>
             <td colspan="4" class="text-right">
               <a href="{{ route('home') }}" class="btn btn-warning mr-4">Continue Shopping</a>
-              <a href="#" class="btn btn-success mr-4">Proceed To Checkout</a>
+              <a href="#" class="btn btn-success mr-4" onclick="confirmOrder()">Confirm Order</a>
             </td>
           </tr>
         </tbody>
@@ -72,4 +78,36 @@
       </center>
     @endif
   </div>
+  <script>
+    // Prepare cart items data for JavaScript
+    var cartItems = @json(
+        $carts->map(function ($cart) {
+            return [
+                'cartId' => $cart->id,
+                'productId' => $cart->product->id,
+            ];
+        }));
+
+    function confirmOrder() {
+      if (confirm("Are you sure you want to confirm this order?")) {
+        // Making a POST request to the server
+        fetch('{{ route('order.confirm') }}', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+              cartItems: cartItems
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Handle success or redirect
+            window.location.href = '{{ route('success.page') }}';
+          })
+          .catch(error => console.error('Error:', error));
+      }
+    }
+  </script>
 </x-layout>

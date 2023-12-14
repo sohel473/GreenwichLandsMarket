@@ -11,6 +11,11 @@ class Order extends Model
 
     protected $fillable = ['user_id', 'ordered', 'paymentId', 'orderId'];
 
+    // casts
+    protected $casts = [
+        'ordered' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
