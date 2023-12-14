@@ -32,7 +32,7 @@
             <div class="card">
               <a href="{{ route('pictures.show', $picture->id) }}" class="card-link">
                 <img src="{{ $picture->mainimage }}" class="card-img-top" alt="{{ $picture->name }}"
-                  style="height: 300px; object-fit: cover;">
+                  style="height: 200px; object-fit: cover; width: 100%;">
               </a>
               <div class="card-body">
                 <h5 class="card-title">{{ $picture->name }}</h5>
@@ -45,6 +45,8 @@
           </div>
         @endforeach
       </div>
+
+
 
       <!-- Pagination Links -->
       <div class="row">

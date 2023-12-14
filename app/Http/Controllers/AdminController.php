@@ -53,6 +53,7 @@ class AdminController extends Controller
         // Search for Orders
         $orderQuery = $request->input('order_search');
         $orders = Order::with('user')
+            ->where('ordered', true)
             ->when($orderQuery, function ($query) use ($orderQuery) {
                 return $query->whereHas('user', function ($q) use ($orderQuery) {
                     $q->where('username', 'LIKE', "%{$orderQuery}%");
@@ -295,7 +296,7 @@ class AdminController extends Controller
 
     public function downloadOrdersReport()
     {
-        $orders = Order::all();
+        $orders = Order::where('ordered', true)->get();
         $pdf = PDF::loadView('reports.orders', compact('orders'));
         return $pdf->download('orders_report.pdf');
     }
