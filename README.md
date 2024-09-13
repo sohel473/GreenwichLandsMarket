@@ -4,6 +4,11 @@ This project is an e-commerce platform designed for selling pictures of popular 
 
 ### Note that this project was created for a university coursework and is not intended for commercial use.
 
+## Coursework PDF
+
+The coursework for this project can be found (Public/CourseWork_COMP1678_001287370.pdf) [here](http://localhost:8000/coursework.pdf).
+
+
 ## Features
 
 ### User Management
@@ -85,6 +90,3 @@ To set up the project locally, follow these steps:
 6. **Access the website**
    Open your browser and navigate to `http://localhost:8000`.
 
-## Coursework PDF
-
-The coursework for this project can be found (Public/CourseWork_COMP1678_001287370.pdf) [here](http://localhost:8000/coursework.pdf).
