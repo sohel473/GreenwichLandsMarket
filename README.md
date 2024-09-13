@@ -6,7 +6,7 @@ This project is an e-commerce platform designed for selling pictures of popular 
 
 ## Coursework PDF
 
-The coursework for this project can be found (Public/CourseWork_COMP1678_001287370.pdf) [here](http://localhost:8000/coursework.pdf).
+The coursework for this project can be found [here](https://github.com/sohel473/GreenwichLandsMarket/blob/main/public/CourseWork_COMP1678_001287370.pdf).
 
 
 ## Features
